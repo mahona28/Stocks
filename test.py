@@ -1,8 +1,9 @@
 import yfinance as yf
-#from pandas_datareader import data as pdr
+#get the stocks from stocks.txt
 f = open("stocks.txt", "r")
 stocks = f.read()
 stocks = stocks.split("\n")
+
 for stock in stocks:
     stock = stock + ".OL"
     print(stock)
@@ -11,3 +12,4 @@ for stock in stocks:
       print(msft.info['forwardPE'])
     except:
       print("Error")
+f.close()
