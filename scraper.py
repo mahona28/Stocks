@@ -34,7 +34,7 @@ while True:
         next_button.click()
 
         # Wait for the next page to load
-        time.sleep(2)  # Adjust this sleep time as needed
+        time.sleep(2) 
         
         # Scrape the new page
         stocks += scrape_page()
@@ -44,7 +44,7 @@ while True:
         next_button.click()
 
         # Wait for the next page to load
-        time.sleep(2)  # Adjust this sleep time as needed
+        time.sleep(2)
         
         # Scrape the new page
         stocks += scrape_page()
