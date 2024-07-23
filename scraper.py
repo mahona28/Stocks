@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 driver = webdriver.Chrome()
 
-driver.get("https://live.euronext.com/nb/markets/oslo/equities/euronext/list")
+driver.get("https://live.euronext.com/nb/markets/oslo/equities/list")
 stocks = ""
 driver.implicitly_wait(10)
 def scrape_page():
@@ -24,12 +24,13 @@ def scrape_page():
 
 # Scrape the first page
 stocks += scrape_page()
-
+num = 1
 # Iterate through pages
+time.sleep(2)
 while True:
     try:
         # Find the "next page" button and click it
-        next_button = driver.find_element(By.XPATH, '//a[@data-dt-idx="1"]')
+        next_button = driver.find_element(By.XPATH, '//a[@data-dt-idx="' + str(num) + '"]')
         driver.execute_script("arguments[0].scrollIntoView(true);", next_button)
         next_button.click()
 
@@ -37,24 +38,13 @@ while True:
         time.sleep(2) 
         
         # Scrape the new page
-        stocks += scrape_page()
-                # Find the "next page" button and click it
-        next_button = driver.find_element(By.XPATH, '//a[@data-dt-idx="2"]')
-        driver.execute_script("arguments[0].scrollIntoView(true);", next_button)
-        next_button.click()
-
-        # Wait for the next page to load
-        time.sleep(2)
-        
-        # Scrape the new page
-        stocks += scrape_page()
-        f = open("stocks.txt", "w")
-        f.write(stocks)
-        f.close()
+        stocks += "\n" + scrape_page()
+        num += 1
+    except:
+        print(f"Error + {num}")
         break
-    except Exception as e:
-        print(f"Error: {e}")
-        break
-
+f = open("stocks.txt", "w")
+f.write(stocks)
+f.close()
 # Close the WebDriver
 driver.quit()
