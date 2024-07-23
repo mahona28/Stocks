@@ -21,7 +21,7 @@ def scrape_page():
 time.sleep(2)
 num = 0
 # Iterate through pages
-while True:
+while num < 4:
     try:
         # Find the "next page" button and click it
         next_button = driver.find_element(By.XPATH, '//a[@data-dt-idx="' + str(num) + '"]')
@@ -32,13 +32,13 @@ while True:
         time.sleep(1) 
         
         # Scrape the new page
-        stocks += "\n" + scrape_page()
+        stocks +=  scrape_page()
         num += 1
     except:
         print(f"Error + {num}")
         break
 f = open("stocks.txt", "w")
-f.write(stocks[1:])
+f.write(stocks)
 f.close()
 # Close the WebDriver
 driver.quit()
