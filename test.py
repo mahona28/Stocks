@@ -9,7 +9,11 @@ for stock in stocks:
     print(stock)
     try:
       msft = yf.Ticker(stock)
-      print(msft.info['forwardPE'])
+      print(msft.info['quickRatio'])
+      print(msft.info['currentRatio'])
+      print(msft.info['debtToEquity'])
+      print(msft.info['operatingProfitMargins'])
+
     except:
       print("Error")
 f.close()
