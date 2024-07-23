@@ -14,28 +14,22 @@ driver.implicitly_wait(10)
 def scrape_page():
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     table = soup.find_all('td', class_="stocks-symbol")
-    mystring = str(table)
-    mystring = mystring.replace('<td class="stocks-symbol">', "")
-    mystring = mystring.replace('</td>', "\n")
-    mystring = mystring.replace(', ', "")
-    mystring = mystring[1:-2]
-    print("\n" + mystring)
-    return mystring
-
-# Scrape the first page
-stocks += scrape_page()
-num = 1
-# Iterate through pages
+    symbols = ""
+    for symbol in table:
+        symbols += symbol.text + '\n'
+    return symbols
 time.sleep(2)
+num = 0
+# Iterate through pages
 while True:
     try:
         # Find the "next page" button and click it
         next_button = driver.find_element(By.XPATH, '//a[@data-dt-idx="' + str(num) + '"]')
         driver.execute_script("arguments[0].scrollIntoView(true);", next_button)
         next_button.click()
-
+        
         # Wait for the next page to load
-        time.sleep(2) 
+        time.sleep(1) 
         
         # Scrape the new page
         stocks += "\n" + scrape_page()
@@ -44,7 +38,7 @@ while True:
         print(f"Error + {num}")
         break
 f = open("stocks.txt", "w")
-f.write(stocks)
+f.write(stocks[1:])
 f.close()
 # Close the WebDriver
 driver.quit()
